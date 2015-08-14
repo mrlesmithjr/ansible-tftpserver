@@ -34,6 +34,7 @@ defaults/main.yml
 apache_root: /var/www/html
 apache_tftp_links:
   - images
+config_tftp: true  #defines if tftp services should be configured
 domain_name: '{{ pri_domain_name }}'
 enable_apt_caching: false  #defines if apt-cacher-ng is setup and added to preseed.cfg
 netboot_url: http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/netboot/
