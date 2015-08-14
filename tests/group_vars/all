@@ -1,0 +1,5 @@
+---
+config_interfaces: false
+enable_apt_caching: false
+enable_dhcp: false
+enable_tftp: true

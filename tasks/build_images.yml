@@ -1,0 +1,34 @@
+---
+- name: build_images | checking if images folder exists
+  stat: path={{ tftpboot_dir }}/images
+  register: tftpboot_images_dir
+
+- name: build_images | creating images folder if it does not exist
+  file: path={{ tftpboot_dir }}/images state=directory
+  when: not tftpboot_images_dir.stat.exists
+
+- name: build_images | checking for existing isos
+  stat: path={{ tftpboot_dir }}/images/{{ item.file }}
+  register: iso_files
+  with_items: tftp_iso_images
+
+- name: build_images | downloading isos
+  get_url: url={{ item.url }}/{{ item.file }} dest={{ tftpboot_dir }}/images/{{ item.file }}
+  with_items: tftp_iso_images
+  when: not iso_files.results[0].stat.exists
+
+- name: build_images | creating tftp_images_folders
+  file: path={{ tftpboot_dir }}/images/{{ item }} state=directory
+  with_items: tftp_images_folders
+  when: tftp_images_folders is defined
+
+- name: build_images | unmouting iso images
+  mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=unmounted
+  with_items: tftp_iso_images
+
+- name: build_images | setting tftpboot_dir folder permissions
+  file: path={{ tftpboot_dir }} state=directory recurse=yes owner=nobody group=nogroup
+
+- name: build_images | mouting iso images
+  mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=mounted
+  with_items: tftp_iso_images
