@@ -42,7 +42,7 @@ netboot_file: netboot.tar.gz
 # To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
 root_password:  #define root password for hosts....define here or in group_vars/all
 sync_tftp: false  #defines if setting up multiple servers are to be configured for GlusterFS
-tftp_bind_address: '{{ ansible_eth0.ipv4.address }}'
+tftp_bind_address: '{{ ansible_default_ipv4.address }}'
 tftp_boot_menu:
 #  - label: install
 #    menu_label: Install
