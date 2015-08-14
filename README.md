@@ -21,6 +21,7 @@ root_password:  #define root password for hosts....define here or in group_vars/
 group_vars/tftpserver
 ````
 ---
+config_dnsmasq: true
 config_interfaces: false
 enable_apt_caching: false
 enable_dhcp: false
