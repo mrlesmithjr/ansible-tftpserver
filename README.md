@@ -41,10 +41,11 @@ enable_apt_caching: false  #defines if apt-cacher-ng is setup and added to prese
 netboot_url: http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/netboot/
 netboot_file: netboot.tar.gz
 # To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
-root_password:  #define root password for hosts....define here or in group_vars/all
+pri_domain_name: example.org  #define here or globally in group_vars/all
 sync_tftp: false  #defines if setting up multiple servers are to be configured for GlusterFS
+root_password: [] #define root password for hosts....define here or in group_vars/all
 tftp_bind_address: '{{ ansible_default_ipv4.address }}'
-tftp_boot_menu:
+tftp_boot_menu: []
 #  - label: install
 #    menu_label: Install
 #    menu_default: false
@@ -99,7 +100,7 @@ tftp_images_folders:
   - Ubuntu/12.04
   - Ubuntu/14.04
 tftpboot_dir: /var/lib/tftpboot
-tftp_iso_images:
+tftp_iso_images: []
 #  - url: http://www.gtlib.gatech.edu/pub/centos/7/isos/x86_64
 #    file: CentOS-7-x86_64-Minimal-1503-01.iso
 #    folder: CentOS/7
