@@ -67,7 +67,7 @@ tftp_images_folders:
   - Ubuntu/12.04
   - Ubuntu/14.04
 tftpboot_dir: /var/lib/tftpboot
-tftp_iso_images:
+tftp_iso_images: []
 #  - url: http://www.gtlib.gatech.edu/pub/centos/7/isos/x86_64
 #    file: CentOS-7-x86_64-Minimal-1503-01.iso
 #    folder: CentOS/7
