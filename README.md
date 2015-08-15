@@ -45,7 +45,7 @@ pri_domain_name: example.org  #define here or globally in group_vars/all
 sync_tftp: false  #defines if setting up multiple servers are to be configured for GlusterFS
 root_password: [] #define root password for hosts....define here or in group_vars/all
 tftp_bind_address: '{{ ansible_default_ipv4.address }}'
-tftp_boot_menu: []
+tftp_boot_menu:
 #  - label: install
 #    menu_label: Install
 #    menu_default: false
