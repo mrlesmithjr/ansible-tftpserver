@@ -14,7 +14,7 @@
 
 - name: config_tftp | moving existing tftpboot
   command: mv {{ tftpboot_home }} {{ tftpboot_backup_dir }}
-  when: tftpboot_backup_dir is defined and (tftpboot_backup_moved.stat.exists != true) and config_tftp and sync_tftp
+  when: tftpboot_backup_dir is defined and (tftpboot_backup_moved.stat.exists != true) and sync_tftp
 
 - name: config_tftp | checking again if tftpboot has already been moved
   stat: path={{ tftpboot_backup_dir }}
@@ -23,13 +23,13 @@
 
 - name: config_tftp | touching file in tftpboot_backup_dir
   file: path={{ tftpboot_backup_dir }}/already_moved state=touch
-  when: tftpboot_backup_dir is defined and (tftpboot_backup_stat.stat.exists == true) and config_tftp and sync_tftp
+  when: tftpboot_backup_dir is defined and (tftpboot_backup_stat.stat.exists == true) and sync_tftp
 
 - name: config_tftp | mounting gluster volumes - tftpboot
   mount: name={{ item.mountpoint }} src={{ item.src }} fstype={{ item.fstype }} opts={{ item.options }} state=mounted
   with_items:
     - { mountpoint: '{{ tftpboot_home }}', src: '{{ primary_gfs_server }}:/{{ tftpboot_mnt }}', fstype: 'glusterfs', options: 'defaults,_netdev,backupvolfile-server={{ secondary_gfs_server }}' }
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | check if netboot has already been downloaded
   stat: path={{ tftpboot_dir }}/netboot_present
@@ -42,7 +42,7 @@
 - name: config_tftp | downloading netboot
   get_url: url={{ netboot_url }}{{ netboot_file }} dest={{ tftpboot_dir }}/{{ netboot_file }}
   run_once: true
-  when: (netboot_present.stat.exists != true) and config_tftp and sync_tftp
+  when: (netboot_present.stat.exists != true) and sync_tftp
 
 - name: config_tftp | extracting netboot
   shell: "tar zxvf {{ tftpboot_dir }}/{{ netboot_file }} -C {{ tftpboot_dir }}"
@@ -51,12 +51,11 @@
 - name: config_tftp | extracting netboot
   shell: "tar zxvf {{ tftpboot_dir }}/{{ netboot_file }} -C {{ tftpboot_dir }}"
   run_once: true
-  when: (netboot_present.stat.exists != true) and config_tftp and sync_tftp
+  when: (netboot_present.stat.exists != true) and sync_tftp
 
 - name: config_tftp | marking as netboot already downloaded
   file: path={{ tftpboot_dir }}/netboot_present state=touch
-  when: config_tftp
-
+  
 - name: config_tftp | creating grub.cfg for installs
   template: src=var/lib/tftpboot/grub.cfg.j2 dest={{ tftpboot_dir }}/grub.cfg owner=root group=root mode=0644
   when: sync_tftp != true
@@ -64,7 +63,7 @@
 - name: config_tftp | creating grub.cfg for installs
   template: src=var/lib/tftpboot/grub.cfg.j2 dest={{ tftpboot_dir }}/grub.cfg owner=root group=root mode=0644
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | creating preseed.cfg for auto-installs
   template: src=var/lib/tftpboot/preseed.cfg.j2 dest={{ tftpboot_dir }}/preseed.cfg owner=root group=root mode=0644
@@ -73,7 +72,7 @@
 - name: config_tftp | creating preseed.cfg for auto-installs
   template: src=var/lib/tftpboot/preseed.cfg.j2 dest={{ tftpboot_dir }}/preseed.cfg owner=root group=root mode=0644
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | reconfiguring txt.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/txt.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/txt.cfg owner=root group=root mode=0664
@@ -83,7 +82,7 @@
 - name: config_tftp | reconfiguring txt.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/txt.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/txt.cfg owner=root group=root mode=0664
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | reconfigure menu.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/menu.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/menu.cfg owner=root group=root mode=0664
@@ -92,7 +91,7 @@
 - name: config_tftp | reconfigure menu.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/menu.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/menu.cfg owner=root group=root mode=0664
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | reconfigure prompt.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/prompt.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/prompt.cfg owner=root group=root mode=0664
@@ -101,7 +100,7 @@
 - name: config_tftp | reconfigure prompt.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/prompt.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/prompt.cfg owner=root group=root mode=0664
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | reconfigure syslinux.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/syslinux.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/syslinux.cfg owner=root group=root mode=0664
@@ -110,7 +109,7 @@
 - name: config_tftp | reconfigure syslinux.cfg
   template: src=var/lib/tftpboot/ubuntu-installer/amd64/boot-screens/syslinux.cfg.j2 dest={{ tftpboot_dir }}/ubuntu-installer/amd64/boot-screens/syslinux.cfg owner=root group=root mode=0664
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | unmouting iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=unmounted
@@ -127,7 +126,7 @@
 - name: config_tftp | removing netboot_file
   file: path={{ tftpboot_dir }}/{{ netboot_file }} state=absent
   run_once: true
-  when: config_tftp and sync_tftp
+  when: sync_tftp
 
 - name: config_tftp | enable IP Forwarding
   sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
