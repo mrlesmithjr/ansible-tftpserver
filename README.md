@@ -3,8 +3,6 @@ Role Name
 
 Builds out a fully functional PXE/TFTP Server for OS deployments.. (Ubuntu included using Netboot) Pre-Seed file template included
 
-[![Build Status](https://travis-ci.org/mrlesmithjr/ansible-tftpserver.svg?branch=master)](https://travis-ci.org/mrlesmithjr/ansible-tftpserver)
-
 Requirements
 ------------
 
