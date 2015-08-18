@@ -27,7 +27,7 @@ d-i mirror/country string manual
 d-i mirror/http/hostname string archive.ubuntu.com
 d-i mirror/http/directory string /ubuntu
 {% if (enable_apt_caching is defined and enable_apt_caching) and apt_cacher_server is defined %}
-d-i mirror/http/proxy string http://{{ apt_cacher_server }}:{{ apt_cacher_ng_port }}
+d-i mirror/http/proxy string http://{{ apt_cacher_server|default ansible_hostname }}:{{ apt_cacher_ng_port|default(3142) }}
 {% endif %}
 {% if (enable_apt_caching is defined and not enable_apt_caching) or enable_apt_caching is not defined %}
 d-i mirror/http/proxy string
