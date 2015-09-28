@@ -11,7 +11,7 @@ rootpw vmware
 {% endif %}
 # Install on the first local disk available on machine
 {{ esxi_install_disk_options }}
-{% if esxi_global_network_options is defined %}
+{% if esxi_global_network_options is defined and esxi_create_host_kickstart_configs is defined and not esxi_create_host_kickstart_configs %}
 {%   for item in esxi_global_network_options %}
 {%     if item.create_default_portgroup %}
 network --bootproto={{ item.bootproto }} --device={{ item.interface }} --addvmportgroup=1
@@ -21,10 +21,30 @@ network --bootproto={{ item.bootproto }} --device={{ item.interface }} --addvmpo
 {%     endif %}
 {%   endfor %}
 {% endif %}
+{% if esxi_create_host_kickstart_configs is defined and esxi_create_host_kickstart_configs %}
+{%   if esxi_hosts is defined %}
+{%     for host in esxi_hosts %}
+{%       if host.bootproto == "dhcp" %}
+{%         if not host.create_default_portgroup %}
 # Set the network to DHCP on the first network adapater, use the specified hostname and do not create a portgroup for the VMs
-# network --bootproto=dhcp --device=vmnic0 --addvmportgroup=0
-# network --bootproto=static --device=vmnic0 --ip=10.0.106.11 --gateway=10.0.106.1 --nameserver=10.0.101.111,10.0.101.112 --netmask=255.255.255.0 --hostname=esxi01.everythingshouldbevirtual.local --addvmportgroup=0
-# reboots the host after the scripted installation is completed
+network --bootproto={{ host.bootproto }} --device={{ host.interface }} --addvmportgroup=0
+{%         endif %}
+{%         if host.create_default_portgroup %}
+# Set the network to DHCP on the first network adapater, use the specified hostname and create a portgroup for the VMs
+network --bootproto={{ host.bootproto }} --device={{ host.interface }} --addvmportgroup=1
+{%         endif %}
+{%       endif %}
+{%       if host.bootproto == "static" %}
+{%         if not host.create_default_portgroup %}
+network --bootproto={{ host.bootproto }} --device={{ host.interface }} --ip={{ host.ip }} --gateway={{ host.gateway }} --nameserver={{ host.nameservers }} --netmask={{ host.netmask }} --hostname={{ host.name }} --addvmportgroup=0
+{%         endif %}
+{%         if host.create_default_portgroup %}
+network --bootproto={{ host.bootproto }} --device={{ host.interface }} --ip={{ host.ip }} --gateway={{ host.gateway }} --nameserver={{ host.nameservers }} --netmask={{ host.netmask }} --hostname={{ host.name }} --addvmportgroup=1
+{%         endif %}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}
 reboot
 
 %firstboot --interpreter=busybox
@@ -47,8 +67,11 @@ esxcli system snmp set --enable true
 {% endif %}
 # Enter Maintenance Mode
 vim-cmd hostsvc/maintenance_mode_enter
+# rename local datastore
+#vim-cmd hostsvc/datastore/rename datastore1 "local-$(hostname -s)"
 {% if esxi_install_vibs is defined and esxi_install_vibs %}
 {%   for item in esxi_vibs %}
+# Install the following VIBS
 esxcli software vib install -v {{ item }}
 {%   endfor %}
 {% endif %}
@@ -63,7 +86,18 @@ esxcli network firewall ruleset set --ruleset-id snmp --enabled true
 {% endif %}
 # Exit Maintenance Mode
 vim-cmd hostsvc/maintenance_mode_exit
-# Add vmnic3 to vSwitch0
-# esxcli network vswitch standard uplink add --uplink-name vmnic3 --vswitch-name vSwitch0
+{% if esxi_addl_settings is defined %}
+{%   for item in esxi_addl_settings %}
+# {{ item.desc }}
+{%     if item.command is defined %}
+{{ item.command }}
+{%     endif %}
+{%     if item.commands is defined %}
+{%       for command in item.commands %}
+{{ command }}
+{%       endfor %}
+{%     endif %}
+{%   endfor %}
+{% endif %}
 # Reboot host one last time
 reboot

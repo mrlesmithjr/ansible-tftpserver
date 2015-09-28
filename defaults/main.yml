@@ -2,19 +2,42 @@
 # defaults file for ansible-tftpserver
 apache_root: /var/www/html
 apache_tftp_links:
-  - images
   - ESXi_VIBS
+  - images
   - KS
 apt_cacher_server: '{{ ansible_hostname }}'
 config_tftp: true  #defines if tftp services should be configured
-domain_name: '{{ pri_domain_name }}'
+domain_name: '{{ pri_domain_name }}'  #defined here or in group_vars/all/network
 enable_apt_caching: false  #defines if apt-cacher-ng is setup and added to preseed.cfg
+esxi_addl_settings:  #define additional esxli commands to run in order to configure each host
+  - desc: 'Set default domain lookup name'
+    command: 'esxcli network ip dns search add --domain={{ pri_domain_name }}'
+#  - desc: 'Add vmnic3 to vSwitch0'
+#    command: 'esxcli network vswitch standard uplink add --uplink-name vmnic3 --vswitch-name vSwitch0'
+#  - desc: 'SATP configurations'
+#    commands:
+#      - 'esxcli storage nmp satp set --satp VMW_SATP_SVC --default-psp VMW_PSP_RR'
+#      - 'esxcli storage nmp satp set --satp VMW_SATP_DEFAULT_AA --default-psp VMW_PSP_RR'
+esxi_create_host_kickstart_configs: false  #defines if individual kickstart configs should be created
 esxi_enable_snmp: false
 esxi_enable_ssh_and_shell: false
 esxi_global_network_options:
   - bootproto: dhcp
     create_default_portgroup: false
     interface: vmnic0
+#esxi_hosts:
+#  - name: esxi01
+#    bootproto: dhcp
+#    create_default_portgroup: false
+#    interface: vmnic0
+#  - name: esxi02
+#    bootproto: static
+#    create_default_portgroup: false
+#    interface: vmnic0
+#    ip: 10.0.106.22
+#    netmask: 255.255.255.0
+#    gateway: 10.0.106.1
+#    nameservers: '{{ pri_dns }},{{ sec_dns }}'
 esxi_install_disk_options: install --firstdisk --overwritevmfs  #example options are... install --firstdisk=usb --overwritevmfs --novmfsondisk ... or ... install --firstdisk --overwritevmfs
 esxi_install_vibs: false
 esxi_root_pw: vmware  #define here or in group_vars/all/accounts (preferred)
@@ -27,9 +50,11 @@ esxi_vibs:
   - 'http://{{ ansible_fqdn }}/ESXi_VIBS/PernixData/PernixData_bootbank_pernixcore-vSphere5.5.0_1.5.0.2-25498.vib'
 netboot_url: http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/netboot/
 netboot_file: netboot.tar.gz
-# To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
+#pri_dns: 10.0.101.11  #define primary dns server here or in group_vars/all/servers
 pri_domain_name: example.org  #define here or globally in group_vars/all
+#sec_dns: 10.0.101.12  #define secondary dns server here or in group_vars/all/servers
 sync_tftp: false  #defines if setting up multiple servers are to be configured for GlusterFS
+# To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
 root_password: [] #define root password for hosts....define here or in group_vars/all
 tftp_bind_address: '{{ ansible_default_ipv4.address }}'
 tftp_boot_menu:
