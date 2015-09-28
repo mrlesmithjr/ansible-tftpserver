@@ -3,11 +3,27 @@
 apache_root: /var/www/html
 apache_tftp_links:
   - images
+  - ESXi_VIBS
   - KS
 apt_cacher_server: '{{ ansible_hostname }}'
 config_tftp: true  #defines if tftp services should be configured
 domain_name: '{{ pri_domain_name }}'
 enable_apt_caching: false  #defines if apt-cacher-ng is setup and added to preseed.cfg
+esxi_enable_snmp: false
+esxi_enable_ssh_and_shell: false
+esxi_global_network_options:
+  - bootproto: dhcp
+    interface: vmnic0
+esxi_install_disk_options: install --firstdisk --overwritevmfs  #example options are... install --firstdisk=usb --overwritevmfs --novmfsondisk ... or ... install --firstdisk --overwritevmfs
+esxi_install_vibs: false
+esxi_root_pw: vmware  #define here or in group_vars/all/accounts (preferred)
+esxi_snmp_options:
+  - community: PUBLIC
+    allowed_from: 10.0.0.0/24
+esxi_vibs:
+  - 'http://{{ ansible_fqdn }}/ESXi_VIBS/Dell/cross_oem-dell-openmanage-esxi_7.3.0.2.ESXi550-0000.vib'
+  - 'http://{{ ansible_fqdn }}/ESXi_VIBS/Dell/cross_oem-dell-iSM-esxi_1.0.ESXi550-0000.vib'
+  - 'http://{{ ansible_fqdn }}/ESXi_VIBS/PernixData/PernixData_bootbank_pernixcore-vSphere5.5.0_1.5.0.2-25498.vib'
 netboot_url: http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/netboot/
 netboot_file: netboot.tar.gz
 # To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512

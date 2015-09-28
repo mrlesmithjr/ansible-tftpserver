@@ -12,18 +12,18 @@
   with_items: tftp_images_folders
   when: tftp_images_folders is defined
 
-- name: build_images | unmouting iso images
+- name: build_images | unmounting iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=unmounted
   with_items: tftp_iso_images
 
-- name: build_images | unmouting VMware iso images
+- name: build_images | unmounting VMware iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=unmounted
   with_items: vmware_iso_images
 
 - name: build_images | setting tftpboot_dir folder permissions
   file: path={{ tftpboot_dir }} state=directory recurse=yes owner=nobody group=nogroup
 
-- name: build_images | mouting iso images
+- name: build_images | mounting iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=mounted
   with_items: tftp_iso_images
 
@@ -33,7 +33,7 @@
   with_items: vmware_iso_images
   when: vmware_iso_images is defined
 
-- name: build_images | mouting VMware iso images
+- name: build_images | mounting VMware iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir}}/images/{{ item.file }} fstype=iso9660 state=mounted
   with_items: vmware_iso_images
   when: vmware_iso_images is defined and vmware_isos.results[0].stat.exists
@@ -41,3 +41,6 @@
 - name: build_images | configuring apache2
   file: src={{ tftpboot_dir }}/{{ item }} dest={{ apache_root }}/{{ item }} owner=www-data group=www-data state=link
   with_items: apache_tftp_links
+
+- name: build_images | configuring ESXi kickstart file(s)
+  template: src=var/lib/tftpboot/KS/ESX_KS.CFG.j2 dest={{ tftpboot_dir }}/KS/ESX_KS.CFG
