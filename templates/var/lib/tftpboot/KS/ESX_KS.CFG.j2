@@ -47,7 +47,6 @@ vim-cmd hostsvc/maintenance_mode_enter
 esxcli software vib install -v {{ item }}
 {%   endfor %}
 {% endif %}
-
 {% if esxi_enable_snmp is defined and esxi_enable_snmp %}
 # Configure Firewall to allow SNMP
 {%   for item in esxi_snmp_options %}
@@ -57,7 +56,6 @@ esxcli network firewall ruleset set --ruleset-id snmp --enabled true
 {%   endfor %}
 /etc/init.d/snmpd restart
 {% endif %}
-
 # Exit Maintenance Mode
 vim-cmd hostsvc/maintenance_mode_exit
 # Add vmnic3 to vSwitch0
