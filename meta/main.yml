@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Larry Smith Jr.
-  description: Builds out a fully functional PXE/TFTP Server for OS deployments.. (Ubuntu included using Netboot) Pre-Seed file template included
+  description: Builds out a fully functional PXE/TFTP Server for OS deployments.. (Ubuntu included using Netboot) Pre-Seed file template included and ESXi scripted install ready.
   #company: your company (optional)
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
