@@ -1,21 +1,17 @@
 ---
 - name: build_images | checking if images folder exists
-  stat: path={{ tftpboot_dir }}/images
+  stat: path={{ tftpboot_dir }}/{{ item }}
   register: tftpboot_images_dir
+  with_items: apache_tftp_links
 
 - name: build_images | creating images folder if it does not exist
-  file: path={{ tftpboot_dir }}/images state=directory
+  file: path={{ tftpboot_dir }}/{{ item }} state=directory
+  with_items: apache_tftp_links
   when: not tftpboot_images_dir.stat.exists
-
-#- name: build_images | checking for existing isos
-#  stat: path={{ tftpboot_dir }}/images/{{ item.file }}
-#  register: iso_files
-#  with_items: tftp_iso_images
 
 - name: build_images | downloading isos
   get_url: url={{ item.url }}/{{ item.file }} dest={{ tftpboot_dir }}/images/{{ item.file }} force=no
   with_items: tftp_iso_images
-#  when: not iso_files.results[0].stat.exists
 
 - name: build_images | creating tftp_images_folders
   file: path={{ tftpboot_dir }}/images/{{ item }} state=directory

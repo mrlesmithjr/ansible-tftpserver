@@ -3,6 +3,7 @@
 apache_root: /var/www/html
 apache_tftp_links:
   - images
+  - KS
 apt_cacher_server: '{{ ansible_hostname }}'
 config_tftp: true  #defines if tftp services should be configured
 domain_name: '{{ pri_domain_name }}'
