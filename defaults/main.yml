@@ -67,6 +67,7 @@ tftp_images_folders:
   - ESXi/5.5U2
   - ESXi/5.5U3
   - ESXi/6.0
+  - ESXi/6.0U1
   - Ubuntu/12.04
   - Ubuntu/14.04
 tftpboot_dir: /var/lib/tftpboot
@@ -80,3 +81,6 @@ tftp_iso_images: []
 #  - url: http://mirror.pnl.gov/releases/14.04
 #    file: ubuntu-14.04.2-server-amd64.iso
 #    folder: Ubuntu/14.04
+#vmware_iso_images:
+#  - file: VMware-VMvisor-Installer-6.0.0.update01-3029758.x86_64.iso
+#    folder: ESXi/6.0U1
