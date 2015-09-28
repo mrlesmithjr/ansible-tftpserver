@@ -13,7 +13,12 @@ rootpw vmware
 {{ esxi_install_disk_options }}
 {% if esxi_global_network_options is defined %}
 {%   for item in esxi_global_network_options %}
-network --bootproto={{ item.bootproto }} --device={{ item.interface }} {% if item.create_default_portgroup %}--addvmportgroup=1{% endif %}{% if not item.create_default_portgroup %}--addvmportgroup=0{% endif %}
+{%     if item.create_default_portgroup %}
+network --bootproto={{ item.bootproto }} --device={{ item.interface }} --addvmportgroup=1
+{%     endif %}
+{%     if not item.create_default_portgroup %}
+network --bootproto={{ item.bootproto }} --device={{ item.interface }} --addvmportgroup=0
+{%     endif %}
 {%   endfor %}
 {% endif %}
 # Set the network to DHCP on the first network adapater, use the specified hostname and do not create a portgroup for the VMs
