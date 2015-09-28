@@ -116,6 +116,11 @@
   with_items: tftp_iso_images
   when: tftp_iso_images is defined
 
+- name: config_tftp | unmouting vmware iso images
+  mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=unmounted
+  with_items: vmware_iso_images
+  when: vmware_iso_images is defined
+
 - name: config_tftp | setting folder permissions on tftp_root_dir
   file: path={{ tftpboot_dir }} state=directory recurse=yes owner=nobody group=nogroup
 
