@@ -13,6 +13,11 @@ vmware_iso_images:
     folder: ESXi/6.0U1
 ````
 
+The best way to use this role is to install from Ansible Galaxy.
+````
+ansible-galaxy install mrlesmithjr.tftpserver
+````
+
 Role Variables
 --------------
 group_vars/all
