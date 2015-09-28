@@ -70,8 +70,8 @@ vim-cmd hostsvc/maintenance_mode_enter
 # rename local datastore
 #vim-cmd hostsvc/datastore/rename datastore1 "local-$(hostname -s)"
 {% if esxi_install_vibs is defined and esxi_install_vibs %}
-{%   for item in esxi_vibs %}
 # Install the following VIBS
+{%   for item in esxi_vibs %}
 esxcli software vib install -v {{ item }}
 {%   endfor %}
 {% endif %}
