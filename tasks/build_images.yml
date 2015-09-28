@@ -14,8 +14,10 @@
 
 - name: build_images | unmouting iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=unmounted
-  with_items: tftp_iso_images
-
+  with_items:
+    - tftp_iso_images
+    - vmware_iso_images
+    
 - name: build_images | setting tftpboot_dir folder permissions
   file: path={{ tftpboot_dir }} state=directory recurse=yes owner=nobody group=nogroup
 
@@ -32,7 +34,7 @@
 - name: build_images | mouting VMware iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir}}/images/{{ item.file }} fstype=iso9660 state=mounted
   with_items: vmware_iso_images
-  when: vmware_iso_images is defined and vmware_isos.results[0].stat.exists 
+  when: vmware_iso_images is defined and vmware_isos.results[0].stat.exists
 
 - name: build_images | configuring apache2
   file: src={{ tftpboot_dir }}/{{ item }} dest={{ apache_root }}/{{ item }} owner=www-data group=www-data state=link
