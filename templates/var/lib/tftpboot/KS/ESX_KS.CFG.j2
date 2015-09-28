@@ -105,7 +105,9 @@ esxcli network firewall ruleset set --ruleset-id snmp --enabled true
 vim-cmd hostsvc/maintenance_mode_exit
 {% if esxi_addl_settings is defined %}
 
-# Additional host configurations
+##################################
+# Additional host configurations #
+##################################
 {%   for item in esxi_addl_settings %}
 # {{ item.desc }}
 {%     if item.command is defined %}
