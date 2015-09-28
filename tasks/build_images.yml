@@ -32,3 +32,8 @@
 - name: build_images | mouting iso images
   mount: name={{ tftpboot_dir }}/images/{{ item.folder }} src={{ tftpboot_dir }}/images/{{ item.file }} fstype=iso9660 state=mounted
   with_items: tftp_iso_images
+
+- name: build_images | configuring apache2
+  file: src={{ tftpboot_dir }}/{{ item }} dest={{ apache_root }}/{{ item }} owner=www-data group=www-data state=link
+  with_items: apache_tftp_links
+  when: tftp_build_images is defined and tftp_build_images

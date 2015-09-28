@@ -55,7 +55,7 @@
 
 - name: config_tftp | marking as netboot already downloaded
   file: path={{ tftpboot_dir }}/netboot_present state=touch
-  
+
 - name: config_tftp | creating grub.cfg for installs
   template: src=var/lib/tftpboot/grub.cfg.j2 dest={{ tftpboot_dir }}/grub.cfg owner=root group=root mode=0644
   when: sync_tftp != true
@@ -130,8 +130,3 @@
 
 - name: config_tftp | enable IP Forwarding
   sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
-
-- name: config_tftp | configuring apache2
-  file: src={{ tftpboot_dir }}/{{ item }} dest={{ apache_root }}/{{ item }} owner=www-data group=www-data state=link
-  with_items: apache_tftp_links
-  when: tftp_build_images is defined and tftp_build_images
