@@ -41,7 +41,7 @@ esxi_global_network_options:
 #    nameservers: '{{ pri_dns }},{{ sec_dns }}'
 esxi_install_disk_options: install --firstdisk --overwritevmfs  #example options are... install --firstdisk=usb --overwritevmfs --novmfsondisk ... or ... install --firstdisk --overwritevmfs
 esxi_install_vibs: false
-esxi_root_pw: vmware  #define here or in group_vars/all/accounts (preferred)
+esxi_root_pw: vmware1  #define here or in group_vars/all/accounts (preferred)
 esxi_snmp_options:
   - community: PUBLIC
     allowed_from: 10.0.0.0/24
