@@ -51,3 +51,6 @@
   with_items:
     - esxi_hosts
   when: esxi_hosts is defined and (esxi_create_host_kickstart_configs is defined and esxi_create_host_kickstart_configs)
+
+- name: build_images | configuring ESXi boot.cfg
+  template: src=var/lib/tftpboot/KS/boot.cfg.j2 dest={{ tftpboot_dir }}/KS/boot.cfg
