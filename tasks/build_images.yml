@@ -52,5 +52,12 @@
     - esxi_hosts
   when: esxi_hosts is defined and (esxi_create_host_kickstart_configs is defined and esxi_create_host_kickstart_configs)
 
+- name: build_images | creating ESXi boot folders
+  file: path={{ tftpboot_dir }}/{{ item.folder }} state=directory
+  with_items: vmware_iso_images
+  when: vmware_iso_images is defined
+
 - name: build_images | configuring ESXi boot.cfg
-  template: src=var/lib/tftpboot/KS/boot.cfg.j2 dest={{ tftpboot_dir }}/KS/boot.cfg
+  template: src=var/lib/tftpboot/ESXi_boot/boot.cfg.j2 dest={{ tftpboot_dir }}/ESXi_boot/{{ item.version }}/boot.cfg
+  with_items: vmware_iso_images
+  when: vmware_iso_images is defined

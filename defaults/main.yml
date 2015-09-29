@@ -3,6 +3,7 @@
 apache_root: /var/www/html
 apache_tftp_links:
   - ESXi_VIBS
+  - ESXi_boot
   - images
   - KS
 apt_cacher_server: '{{ ansible_hostname }}'
