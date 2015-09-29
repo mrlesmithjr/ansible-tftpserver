@@ -53,7 +53,7 @@
   when: esxi_hosts is defined and (esxi_create_host_kickstart_configs is defined and esxi_create_host_kickstart_configs)
 
 - name: build_images | creating ESXi boot folders
-  file: path={{ tftpboot_dir }}/{{ item.folder }} state=directory
+  file: path={{ tftpboot_dir }}/ESXi_boot/{{ item.version }} state=directory
   with_items: vmware_iso_images
   when: vmware_iso_images is defined
 
