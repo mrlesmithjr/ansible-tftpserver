@@ -45,50 +45,50 @@ esxi_addl_settings:  #define additional esxli commands to run in order to config
 esxi_enable_snmp: true
 esxi_enable_ssh_and_shell: true
 esxi_install_vibs: true
-tftp_boot_menu:
+tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by default
   - label: install
     menu_label: Install
-    menu_default: false
+#    menu_default: false
     kernel: ubuntu-installer/amd64/linux
     append: 'vga=788 initrd=ubuntu-installer/amd64/initrd.gz -- quiet'
   - label: cli
     menu_label: 'Command-line install'
-    menu_default: false
+#    menu_default: false
     kernel: ubuntu-installer/amd64/linux
     append: 'tasks=standard pkgsel/language-pack-patterns= pkgsel/install-language-support=false vga=788 initrd=ubuntu-installer/amd64/initrd.gz -- quiet'
   - label: 'auto-install Ubuntu Netboot (Latest)'
     menu_label: 'Automated install Ubuntu (Latest)'
-    menu_default: true
+#    menu_default: true
     kernel: ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
   - label: 'CentOS 7 (Manual)'
     menu_label: 'CentOS 7 (Manual)'
-    menu_default: false
+#    menu_default: false
     kernel: images/CentOS/7/images/pxeboot/vmlinuz
     append: 'auto=true priority=critical vga=normal initrd=tftp://{{ tftp_bind_address }}/images/CentOS/7/images/pxeboot/initrd.img ip=dhcp inst.repo=http://{{ tftp_bind_address }}/images/CentOS/7'
   - label: 'Ubuntu 12.04.5 (Manual)'
     menu_label: 'Install Ubuntu 12.04.5 (Manual)'
-    menu_default: false
+#    menu_default: false
     kernel: images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto'
   - label: 'Ubuntu 12.04.5 (Pre-Seed)'
     menu_label: 'Install Ubuntu 12.04.5 (Pre-Seed)'
-    menu_default: false
+#    menu_default: false
     kernel: images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
   - label: 'Ubuntu 14.04.3 (Manual)'
     menu_label: 'Install Ubuntu 14.04.3 (Manual)'
-    menu_default: false
+#    menu_default: false
     kernel: images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto'
   - label: 'Ubuntu 14.04.3 (Pre-Seed)'
     menu_label: 'Install Ubuntu 14.04.3 (Pre-Seed)'
-    menu_default: false
+#    menu_default: false
     kernel: images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
   - label: 'ESXi 6.0 U1 (scripted install)'
     menu_label: 'ESXi 6.0 U1 Installer'
-    menu_default: false
+#    menu_default: false
     kernel: images/ESXi/6.0/mboot.c32
     append: '-c images/ESXi/6.0/boot.cfg ks=http://{{ ansible_fqdn }}/KS/ESX_KS.CFG'
 tftp_build_images: true  #defines if images folder(s) and isos should be added
@@ -114,6 +114,7 @@ defaults/main.yml
 apache_root: /var/www/html
 apache_tftp_links:
   - ESXi_VIBS
+  - ESXi_boot
   - images
   - KS
 apt_cacher_server: '{{ ansible_hostname }}'
@@ -151,7 +152,7 @@ esxi_global_network_options:
 #    nameservers: '{{ pri_dns }},{{ sec_dns }}'
 esxi_install_disk_options: install --firstdisk --overwritevmfs  #example options are... install --firstdisk=usb --overwritevmfs --novmfsondisk ... or ... install --firstdisk --overwritevmfs
 esxi_install_vibs: false
-esxi_root_pw: vmware  #define here or in group_vars/all/accounts (preferred)
+esxi_root_pw: vmware1  #define here or in group_vars/all/accounts (preferred)
 esxi_snmp_options:
   - community: PUBLIC
     allowed_from: 10.0.0.0/24
@@ -168,7 +169,7 @@ sync_tftp: false  #defines if setting up multiple servers are to be configured f
 # To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
 root_password: [] #define root password for hosts....define here or in group_vars/all
 tftp_bind_address: '{{ ansible_default_ipv4.address }}'
-tftp_boot_menu:
+tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by default
 #  - label: install
 #    menu_label: Install
 #    menu_default: false
@@ -181,7 +182,7 @@ tftp_boot_menu:
 #    append: 'tasks=standard pkgsel/language-pack-patterns= pkgsel/install-language-support=false vga=788 initrd=ubuntu-installer/amd64/initrd.gz -- quiet'
   - label: 'auto-install Ubuntu Netboot (Latest)'
     menu_label: 'Automated install Ubuntu (Latest)'
-    menu_default: true
+#    menu_default: true
     kernel: ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
 #  - label: 'CentOS 7 (Manual)'

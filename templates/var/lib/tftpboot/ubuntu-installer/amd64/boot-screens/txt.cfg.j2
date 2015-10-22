@@ -1,13 +1,18 @@
 # {{ ansible_managed }}
-default install
+default local
+label local
+  menu label ^Boot from hard drive
+  menu default
+  localboot 0
 {% if tftp_boot_menu is defined %}
 {%   for item in tftp_boot_menu %}
 label {{ item.label }}
   menu label ^{{ item.menu_label }}
-{%     if item.menu_default is defined and item.menu_default %}
-  menu default
-{%     endif %}
+{%     if item.kernel is defined %}
   kernel {{ item.kernel }}
+{%     endif %}
+{%     if item.append is defined %}
   append {{ item.append }}
+{%     endif %}
 {%   endfor %}
 {% endif %}
