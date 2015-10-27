@@ -6,7 +6,12 @@ vmaccepteula
 
 # Set the root password for the DCUI and ESXi Shell
 {% if esxi_root_pw is defined %}
+{%   if (esxi_root_pw_encrypted is defined and not esxi_root_pw_encrypted) or esxi_root_pw_encrypted is not defined %}
 rootpw {{ esxi_root_pw }}
+{%   endif %}
+{%   if esxi_root_pw_encrypted is defined and esxi_root_pw_encrypted %}
+rootpw {{ esxi_root_pw }} --iscrypted
+{%   endif %}
 {% endif %}
 {% if esxi_root_pw is not defined %}
 rootpw vmware

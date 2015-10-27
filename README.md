@@ -153,6 +153,7 @@ esxi_global_network_options:
 esxi_install_disk_options: install --firstdisk --overwritevmfs  #example options are... install --firstdisk=usb --overwritevmfs --novmfsondisk ... or ... install --firstdisk --overwritevmfs
 esxi_install_vibs: false
 esxi_root_pw: vmware1  #define here or in group_vars/all/accounts (preferred)
+esxi_root_pw_encrypted: false  #defines if esxi_root_pw has been set to an already encrypted password
 esxi_snmp_options:
   - community: PUBLIC
     allowed_from: 10.0.0.0/24
