@@ -254,11 +254,18 @@ Dependencies
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+---
+- hosts: tftpserver-nodes
+  remote_user: remote
+  sudo: true
+  roles:
+    - { role: mrlesmithjr.apache2 }
+    - { role: mrlesmithjr.apt-cacher-ng, when: enable_apt_caching is defined and enable_apt_caching }
+    - { role: mrlesmithjr.config-interfaces, when: config_interfaces is defined and config_interfaces }
+    - { role: mrlesmithjr.dnsmasq }
+    - { role: mrlesmithjr.isc-dhcp, when: enable_dhcp is defined and enable_dhcp }
+    - mrlesmithjr.tftpserver
 
-    - hosts: tftpserver
-      roles:
-         - { role: mrlesmithjr.tftpserver }
 
 License
 -------
