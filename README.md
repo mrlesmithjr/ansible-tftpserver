@@ -110,6 +110,7 @@ vmware_iso_images:
 defaults/main.yml
 ````
 ---
+---
 # defaults file for ansible-tftpserver
 apache_root: /var/www/html
 apache_tftp_links:
@@ -132,7 +133,8 @@ esxi_addl_settings:  #define additional esxli commands to run in order to config
 #      - 'esxcli storage nmp satp set --satp VMW_SATP_DEFAULT_AA --default-psp VMW_PSP_RR'
 esxi_create_host_kickstart_configs: false  #defines if individual kickstart configs should be created
 esxi_enable_snmp: false
-esxi_enable_ssh_and_shell: false
+esxi_enable_ssh_and_shell: false  #defines if SSH and ESXi shell are to be enabled
+esxi_exit_maint_mode: false  #defines if during TFTP/PXE load of ESXi hosts maintenance mode should be exited.
 esxi_global_network_options:
   - bootproto: dhcp
     create_default_portgroup: false
