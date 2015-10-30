@@ -79,19 +79,21 @@ d-i passwd/make-user boolean false
 {%   if create_users is defined %}
 #d-i passwd/make-user boolean false
 {%     for item in create_users %}
-{%       if item.comment is defined %}
+{%       if item.preseed_user is defined and item.preseed_user %}
+{%         if item.comment is defined %}
 d-i passwd/user-fullname string {{ item.comment }}
-{%       endif %}
-{%       if item.comment is not defined %}
+{%         endif %}
+{%         if item.comment is not defined %}
 d-i passwd/user-fullname string {{ item.user }}
-{%       endif %}
+{%         endif %}
 d-i passwd/username string {{ item.user }}
-{%       if tftp_preseed_users_encrypted_pw is defined and not tftp_preseed_users_encrypted_pw %}
+{%         if tftp_preseed_users_encrypted_pw is defined and not tftp_preseed_users_encrypted_pw %}
 d-i passwd/user-password password {{ item.pass }}
 d-i passwd/user-password-again password {{ item.pass }}
-{%       endif %}
-{%       if tftp_preseed_users_encrypted_pw is defined and tftp_preseed_users_encrypted_pw %}
+{%         endif %}
+{%         if tftp_preseed_users_encrypted_pw is defined and tftp_preseed_users_encrypted_pw %}
 d-i passwd/user-password-crypted password {{ item.pass }}
+{%         endif %}
 {%       endif %}
 {%     endfor %}
 d-i user-setup/allow-password-weak boolean true
@@ -134,8 +136,10 @@ d-i preseed/late_command string \
 {% if (tftp_preseed_create_users is defined and tftp_preseed_create_users) %}
 {%   if create_users is defined %}
 {%     for item in create_users %}
-{%       if item.sudo is defined and item.sudo %}
+{%       if item.preseed_user is defined and item.preseed_user %}
+{%         if item.sudo is defined and item.sudo %}
     echo "{{ item.user }}	ALL=(ALL) NOPASSWD:ALL">>/target/etc/sudoers; \
+{%         endif %}
 {%       endif %}
 {%     endfor %}
 {%   endif %}

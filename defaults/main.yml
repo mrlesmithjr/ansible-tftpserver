@@ -18,6 +18,7 @@ config_tftp: true  #defines if tftp services should be configured
 #    pass: demo_password  #define password for account
 #    setup: false  #true=creates account|false=removes account if exists...true|false
 #    shell: ''  #define a different shell for the user
+#    preseed_user: false  #defines if user should be setup as default user during preseed auto-install...Only 1 user can be added.
 #    sudo: false  #define if user should have sudo access...true|false
 #    system_account: false  #define if account is a system account...true|falseinstall_fail2ban: false
 domain_name: '{{ pri_domain_name }}'  #defined here or in group_vars/all/network
