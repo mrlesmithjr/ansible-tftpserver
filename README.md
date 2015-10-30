@@ -225,8 +225,6 @@ tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by 
 #    kernel: images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/linux
 #    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
 tftp_build_images: false  #defines if images folder(s) and isos should be added
-tftp_preseed_create_users: false  #defines if Users should be created as part of preseed....define these in create_users
-tftp_preseed_users_encrypted_pw: true  #defines if users accounts are encrypted....this should be yes..but ensure that password under create_users is MD5 hash.
 tftp_images_folders:
   - CentOS/7
   - ESXi/5.1
@@ -254,6 +252,8 @@ tftp_iso_images: []
 #vmware_iso_images:
 #  - file: VMware-VMvisor-Installer-6.0.0.update01-3029758.x86_64.iso
 #    folder: ESXi/6.0U1
+tftp_preseed_create_users: false  #defines if Users should be created as part of preseed....define these in create_users
+tftp_preseed_users_encrypted_pw: true  #defines if users accounts are encrypted....this should be yes..but ensure that password under create_users is MD5 hash.
 ````
 
 Dependencies
