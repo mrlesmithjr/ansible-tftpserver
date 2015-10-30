@@ -72,9 +72,33 @@ d-i partman/confirm_nooverwrite boolean true
 
 ### Account setup
 d-i passwd/root-login boolean true
+{% if (tftp_preseed_create_users is defined and not tftp_preseed_create_users) or tftp_preseed_create_users is not defined %}
 d-i passwd/make-user boolean false
+{% endif %}
+{% if (tftp_preseed_create_users is defined and tftp_preseed_create_users) %}
+{%   if create_users is defined %}
+{%     for item in create_users %}
+#d-i passwd/make-user boolean false
+{%       if item.comment is defined %}
+d-i passwd/user-fullname string {{ item.comment }}
+{%       endif %}
+{%       if item.comment is not defined %}
+d-i passwd/user-fullname string {{ item.user }}
+{%       endif %}
+d-i passwd/username string {{ item.user }}
+{%       if tftp_preseed_users_encrypted_pw is defined and not tftp_preseed_users_encrypted_pw %}
+d-i passwd/user-password password {{ item.password }}
+d-i passwd/user-password-again password {{ item.password }}
+{%       endif %}
+{%       if tftp_preseed_users_encrypted_pw is defined and tftp_preseed_users_encrypted_pw %}
+d-i passwd/user-password-crypted password {{ item.password }}
+{%       endif %}
+{%     endfor %}
+d-i user-setup/allow-password-weak boolean true
+{%   endif %}
+{% endif %}
 
-# Root password, either in clear text
+# Root password, either in clear text or encrypted...encrypted is default
 d-i passwd/root-password-crypted password {{ root_password }}
 
 # Set to true if you want to encrypt the first user's home directory.
@@ -107,4 +131,13 @@ xserver-xorg xserver-xorg/config/monitor/mode-list \
 
 #### Advanced options
 d-i preseed/late_command string \
+{% if (tftp_preseed_create_users is defined and tftp_preseed_create_users) %}
+{%   if create_users is defined %}
+{%     for item in create_users %}
+{%       if item.sudo is defined and item.sudo %}
+    echo "{{ item.user }}	ALL=(ALL) NOPASSWD:ALL">>/target/etc/sudoers; \
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{% endif %}
     in-target sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config;

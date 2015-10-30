@@ -110,7 +110,6 @@ vmware_iso_images:
 defaults/main.yml
 ````
 ---
----
 # defaults file for ansible-tftpserver
 apache_root: /var/www/html
 apache_tftp_links:
@@ -120,6 +119,18 @@ apache_tftp_links:
   - KS
 apt_cacher_server: '{{ ansible_hostname }}'
 config_tftp: true  #defines if tftp services should be configured
+# To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
+#create_users:  #defines user accounts to setup on hosts....define here or in group_vars/all
+#  - user: demo_user  #define username
+#    authorized_keys: ''
+#    comment: 'Demo user'  #define a comment to associate with the account
+#    generate_keys: false  #generate ssh keys...true|false
+#    home: ''  #define a different home directory... ''=/home/username
+#    pass: demo_password  #define password for account
+#    setup: false  #true=creates account|false=removes account if exists...true|false
+#    shell: ''  #define a different shell for the user
+#    sudo: false  #define if user should have sudo access...true|false
+#    system_account: false  #define if account is a system account...true|falseinstall_fail2ban: false
 domain_name: '{{ pri_domain_name }}'  #defined here or in group_vars/all/network
 enable_apt_caching: false  #defines if apt-cacher-ng is setup and added to preseed.cfg
 esxi_addl_settings:  #define additional esxli commands to run in order to configure each host
@@ -214,6 +225,8 @@ tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by 
 #    kernel: images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/linux
 #    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
 tftp_build_images: false  #defines if images folder(s) and isos should be added
+tftp_preseed_create_users: false  #defines if Users should be created as part of preseed....define these in create_users
+tftp_preseed_users_encrypted_pw: true  #defines if users accounts are encrypted....this should be yes..but ensure that password under create_users is MD5 hash.
 tftp_images_folders:
   - CentOS/7
   - ESXi/5.1
