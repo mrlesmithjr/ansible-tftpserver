@@ -77,8 +77,8 @@ d-i passwd/make-user boolean false
 {% endif %}
 {% if (tftp_preseed_create_users is defined and tftp_preseed_create_users) %}
 {%   if create_users is defined %}
-{%     for item in create_users %}
 #d-i passwd/make-user boolean false
+{%     for item in create_users %}
 {%       if item.comment is defined %}
 d-i passwd/user-fullname string {{ item.comment }}
 {%       endif %}
