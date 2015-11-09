@@ -78,6 +78,15 @@ pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-
     min_size: 500
     priority: 50
     use_filesystem: true
+  - name: swap
+#    mountpoint:
+#    bootable: false
+    filesystem: linux-swap
+    max_size: 2048
+    method: swap
+    min_size: 500
+    priority: 512
+#    use_filesystem: true
   - name: root
     mountpoint: /
 #    bootable: false
@@ -87,15 +96,6 @@ pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-
     min_size: 5000
     priority: 10000
     use_filesystem: true
-  - name: swap
-#    mountpoint:
-#    bootable: false
-    filesystem: linux-swap
-    max_size: 100%
-    method: swap
-    min_size: 100%
-    priority: 512
-#    use_filesystem: true
 pre_seed_partion_disk: /dev/sda  #defines disk to install to during pre-seed TFTP/PXE install
 pre_seed_partitioning_method: lvm   #defines partitioning method....lvm, regular or crypto
 pri_domain_name: example.org  #define here or globally in group_vars/all
