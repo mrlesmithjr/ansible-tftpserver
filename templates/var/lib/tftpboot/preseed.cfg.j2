@@ -64,7 +64,7 @@ d-i partman-auto-lvm/guided_size string max
 # - multi:  separate /home, /usr, /var, and /tmp partitions
 d-i partman-auto/choose_recipe select atomic
 
-{% if pre_seed_expert_recipe_partitioning is defined and pre_seed_exper_recipe_partitiong %}
+{% if pre_seed_expert_recipe_partitioning is defined and pre_seed_expert_recipe_partitioning %}
 d-i partman-auto/expert_recipe string                         \
       boot-root ::                                            \
 {%   for item in pre_seed_expert_recipe_partitions %}
