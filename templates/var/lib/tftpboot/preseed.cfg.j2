@@ -45,7 +45,8 @@ d-i time/zone string US/Eastern
 d-i clock-setup/ntp boolean true
 
 ### Partitioning
-d-i partman-auto/disk string /dev/sda
+d-i partman-auto/disk string {{ pre_seed_partion_disk }}
+{% if pre_seed_partitioning_method == "lvm" %}
 d-i partman-auto/method string lvm
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
@@ -55,12 +56,38 @@ d-i partman-lvm/confirm_nooverwrite boolean true
 # For LVM partitioning, you can select how much of the volume group to use
 # for logical volumes.
 d-i partman-auto-lvm/guided_size string max
+{% endif %}
 
 # You can choose one of the three predefined partitioning recipes:
 # - atomic: all files in one partition
 # - home:   separate /home partition
 # - multi:  separate /home, /usr, /var, and /tmp partitions
 d-i partman-auto/choose_recipe select atomic
+
+{% if pre_seed_expert_recipe_partitioning is defined and pre_seed_exper_recipe_partitiong %}
+d-i partman-auto/expert_recipe string                         \
+      boot-root ::                                            \
+{%   for item in pre_seed_expert_recipe_partitions %}
+              {{ item.min_size }} {{ item.priority }} {{ item.max_size }} {{ item.filesystem }}                                  \
+{%     if item.bootable is defined and item.bootable %}
+                      $primary{ } $bootable{ }                \
+{%     endif %}
+{%     if item.method is defined %}
+                      method{ {{ item.method }} } format{ }              \
+{%     endif %}
+{%     if item.use_filesystem is defined and item.use_filesystem %}
+                      use_filesystem{ } filesystem{ {{ item.filesystem }} }    \
+{%     endif %}
+{%     if item.mountpoint is defined and item.mountpoint != None %}
+                      mountpoint{ {{ item.mountpoint }} }                     \
+{%     endif %}
+{%     if not loop.last %}
+              .                                               \
+{%     endif %}
+{%   endfor %}
+              .
+{% endif %}
+
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
