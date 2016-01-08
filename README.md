@@ -178,6 +178,40 @@ esxi_vibs:
 netboot_url: http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/netboot/
 netboot_file: netboot.tar.gz
 #pri_dns: 10.0.101.11  #define primary dns server here or in group_vars/all/servers
+pre_seed_expert_recipe_partitioning: false  #defines if custom partitioning is required
+pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-seed
+  - name: boot
+    mountpoint: /boot
+    bootable: true
+    filesystem: ext4
+###    lv_name: boot  #This is an example only for /boot  do not assign an lv_name for boot.../boot will not be part of LVM.
+    max_size: 1000
+    method: format
+    min_size: 500
+    priority: 50
+    use_filesystem: true
+  - name: swap
+#    mountpoint:  #not needed for swap
+#    bootable: false  #not needed for swap.
+    filesystem: linux-swap
+    lv_name: swap  #defines the LVM name to use if pre_seed_partitioning_method: lvm and pre_seed_expert_recipe_partitioning: true
+    max_size: 2048
+    method: swap
+    min_size: 500
+    priority: 512
+#    use_filesystem: true
+  - name: root
+    mountpoint: /
+#    bootable: false  #not needed for root
+    filesystem: ext4
+    lv_name: root  #defines the LVM name to use if pre_seed_partitioning_method: lvm and pre_seed_expert_recipe_partitioning: true
+    max_size: 10000
+    method: format
+    min_size: 5000
+    priority: 10000
+    use_filesystem: true
+pre_seed_partition_disk: /dev/sda  #defines disk to install to during pre-seed TFTP/PXE install
+pre_seed_partitioning_method: lvm   #defines partitioning method....lvm, regular or crypto
 pri_domain_name: example.org  #define here or globally in group_vars/all
 #sec_dns: 10.0.101.12  #define secondary dns server here or in group_vars/all/servers
 sync_tftp: false  #defines if setting up multiple servers are to be configured for GlusterFS
