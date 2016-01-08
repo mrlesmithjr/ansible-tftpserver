@@ -73,6 +73,7 @@ pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-
     mountpoint: /boot
     bootable: true
     filesystem: ext4
+    lv_name: boot  #defines the LVM name to use if pre_seed_partitioning_method: lvm and pre_seed_expert_recipe_partitioning: true
     max_size: 1000
     method: format
     min_size: 500
@@ -82,6 +83,7 @@ pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-
 #    mountpoint:
 #    bootable: false
     filesystem: linux-swap
+    lv_name: swap
     max_size: 2048
     method: swap
     min_size: 500
@@ -91,6 +93,7 @@ pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-
     mountpoint: /
 #    bootable: false
     filesystem: ext4
+    lv_name: root
     max_size: 10000
     method: format
     min_size: 5000

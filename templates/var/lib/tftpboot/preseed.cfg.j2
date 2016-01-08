@@ -77,6 +77,10 @@ d-i partman-auto/expert_recipe string                         \
 {%     if item.bootable is defined and item.bootable %}
                       $primary{ } $bootable{ }                \
 {%     endif %}
+{%     if pre_seed_partitioning_method == "lvm" and item.lv_name is defined %}
+                      lv_name{ {{ item.lv_name }} }           \
+                      $lvmok{ }                               \
+{%     endif %}
 {%     if item.method is defined %}
                       method{ {{ item.method }} } format{ }              \
 {%     endif %}
