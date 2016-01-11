@@ -27,6 +27,7 @@ d-i netcfg/wireless_wep string
 d-i mirror/country string manual
 d-i mirror/http/hostname string {{ apt_mirror_server }}
 d-i mirror/http/directory string {{ apt_mirror_dir }}
+d-i mirror/http/mirror select {{ apt_mirror_server }}
 {% elif (enable_apt_mirror is defined and not enable_apt_mirror) or enable_apt_mirror is not defined %}
 d-i mirror/country string manual
 d-i mirror/http/hostname string archive.ubuntu.com
