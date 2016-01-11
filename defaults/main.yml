@@ -7,6 +7,8 @@ apache_tftp_links:
   - images
   - KS
 apt_cacher_server: '{{ ansible_hostname }}'
+apt_mirror_dir: /ubuntu  #defines the mirror directory of webserver if using local apt repo mirror (apt-mirror) server.
+apt_mirror_server: 'apt-mirror.{{pri_domain_name }}'  #define your local apt repo mirror (apt-mirror) server if you are using one.
 config_tftp: true  #defines if tftp services should be configured
 # To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
 #create_users:  #defines user accounts to setup on hosts....define here or in group_vars/all
@@ -23,6 +25,7 @@ config_tftp: true  #defines if tftp services should be configured
 #    system_account: false  #define if account is a system account...true|falseinstall_fail2ban: false
 domain_name: '{{ pri_domain_name }}'  #defined here or in group_vars/all/network
 enable_apt_caching: false  #defines if apt-cacher-ng is setup and added to preseed.cfg
+enable_apt_mirror: false  #defines if using a local mirror (apt-mirror) and configures preseed.cfg as such. Do not use both apt_caching and apt_mirror...
 esxi_addl_settings:  #define additional esxli commands to run in order to configure each host
   - desc: 'Set default domain lookup name'
     command: 'esxcli network ip dns search add --domain={{ pri_domain_name }}'
