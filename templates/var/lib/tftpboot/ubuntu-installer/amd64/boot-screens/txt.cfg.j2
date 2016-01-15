@@ -5,7 +5,7 @@ default vesamenu.c32
 label {{ item.label }}
   menu label ^{{ item.menu_label }}
 {%     if item.menu_default is defined and item.menu_default %}
-  menu_default
+  menu default
 {%     endif %}
 {%     if item.localboot is defined and item.localboot %}
   localboot 0
