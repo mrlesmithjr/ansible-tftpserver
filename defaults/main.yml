@@ -127,7 +127,7 @@ tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by 
 #    append: 'tasks=standard pkgsel/language-pack-patterns= pkgsel/install-language-support=false vga=788 initrd=ubuntu-installer/amd64/initrd.gz -- quiet'
   - label: 'auto-install Ubuntu Netboot (Latest)'
     menu_label: 'Automated install Ubuntu (Latest)'
-#    menu_default: true
+    menu_default: false
     kernel: ubuntu-installer/amd64/linux
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
 #  - label: 'CentOS 7 (Manual)'
