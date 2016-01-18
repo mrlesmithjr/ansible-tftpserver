@@ -101,7 +101,7 @@
   file:
     path: "{{ tftpboot_dir }}/netboot_present"
     state: touch
-    when: not netboot_present.stat.exists
+  when: not netboot_present.stat.exists
 
 - name: config_tftp | creating grub.cfg for installs
   template:
