@@ -165,7 +165,7 @@
     group: root
     mode: 0664
   run_once: true
-  when: sync_tftp is defined sync_tftp
+  when: sync_tftp is defined and sync_tftp
 
 - name: config_tftp | reconfigure menu.cfg
   template:
