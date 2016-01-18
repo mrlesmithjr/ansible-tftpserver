@@ -221,9 +221,13 @@ pre_seed_partition_disk: /dev/sda  #defines disk to install to during pre-seed T
 pre_seed_partitioning_method: lvm   #defines partitioning method....lvm, regular or crypto
 pri_domain_name: example.org  #define here or globally in group_vars/all
 #sec_dns: 10.0.101.12  #define secondary dns server here or in group_vars/all/servers
+primary_gfs_server: ''  #define if using GlusterFS
+secondary_gfs_server: ''  #define if using GlusterFS
 sync_tftp: false  #defines if setting up multiple servers are to be configured for GlusterFS
 # To generate passwords use (replace P@55w0rd with new password).... echo "P@55w0rd" | mkpasswd -s -m sha-512
 root_password: [] #define root password for hosts....define here or in group_vars/all
+tftpboot_backup_dir: ''  #define if using GlusterFS
+tftpboot_mnt: ''  #define if using GlusterFS
 tftp_bind_address: '{{ ansible_default_ipv4.address }}'
 tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by default
   - label: local
