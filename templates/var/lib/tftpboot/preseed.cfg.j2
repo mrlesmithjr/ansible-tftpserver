@@ -166,6 +166,16 @@ d-i grub-installer/with_other_os boolean true
 ### Finishing up the installation
 d-i finish-install/reboot_in_progress note
 
+# This is how to make the installer shutdown when finished, but not
+# reboot into the installed system.
+#d-i debian-installer/exit/halt boolean true
+# This will power off the machine instead of just halting it.
+{% if tftp_poweroff_after_install is defined and tftp_poweroff_after_install %}
+d-i debian-installer/exit/poweroff boolean true
+{% elif (tftp_poweroff_after_install is defined and not tftp_poweroff_after_install) or tftp_poweroff_after_install is not defined %}
+#d-i debian-installer/exit/poweroff boolean true
+{% endif %}
+
 ### X configuration
 xserver-xorg xserver-xorg/autodetect_monitor boolean true
 xserver-xorg xserver-xorg/config/monitor/selection-method \

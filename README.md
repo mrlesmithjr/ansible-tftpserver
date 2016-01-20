@@ -288,6 +288,7 @@ tftp_images_folders:
   - ESXi/6.0U1
   - Ubuntu/12.04
   - Ubuntu/14.04
+tftp_poweroff_after_install: false  #defines if host should be shutdown after installing...good for mass PXE deployments when the option to do a one-time boot to PXE is not an option.
 tftpboot_dir: /var/lib/tftpboot
 tftp_iso_images: []
 #  - url: http://www.gtlib.gatech.edu/pub/centos/7/isos/x86_64
