@@ -32,7 +32,7 @@ d-i mirror/http/mirror select {{ apt_mirror_server }}
 d-i mirror/country string manual
 d-i mirror/http/hostname string {{ tftp_bind_address }}
 d-i mirror/http/directory string /images/Ubuntu/14.04
-d-i mirror/http/mirror select {{ apt_mirror_server }}
+d-i mirror/http/mirror select {{ tftp_bind_address }}
 {% endif %}
 
 {% if (enable_apt_caching is defined and enable_apt_caching) and apt_cacher_server is defined %}
