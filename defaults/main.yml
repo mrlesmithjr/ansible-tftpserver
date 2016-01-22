@@ -144,22 +144,22 @@ tftp_boot_menu:  #menu_default has been disabled to allow boot from local HD by 
 #    menu_label: 'Install Ubuntu 12.04.5 (Manual)'
 #    menu_default: false
 #    kernel: images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/linux
-#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto'
+#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto live-installer/net-image=http://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/filesystem.squashfs'
 #  - label: 'Ubuntu 12.04.5 (Pre-Seed)'
 #    menu_label: 'Install Ubuntu 12.04.5 (Pre-Seed)'
 #    menu_default: false
 #    kernel: images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/linux
-#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
+#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/12.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/ubuntu_12.04_preseed.cfg live-installer/net-image=http://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/filesystem.squashfs'
 #  - label: 'Ubuntu 14.04.2 (Manual)'
 #    menu_label: 'Install Ubuntu 14.04.2 (Manual)'
 #    menu_default: false
 #    kernel: images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/linux
-#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto'
+#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto live-installer/net-image=http://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/filesystem.squashfs'
 #  - label: 'Ubuntu 14.04.2 (Pre-Seed)'
 #    menu_label: 'Install Ubuntu 14.04.2 (Pre-Seed)'
 #    menu_default: false
 #    kernel: images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/linux
-#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/preseed.cfg'
+#    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftp_bind_address }}/ubuntu_14.04_preseed.cfg live-installer/net-image=http://{{ tftp_bind_address }}/images/Ubuntu/14.04/install/filesystem.squashfs'
 tftp_build_images: false  #defines if images folder(s) and isos should be added
 tftp_images_folders:
   - CentOS/7

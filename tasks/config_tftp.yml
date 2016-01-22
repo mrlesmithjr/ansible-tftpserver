@@ -126,23 +126,31 @@
 
 - name: config_tftp | creating preseed.cfg for auto-installs
   template:
-    src: "var/lib/tftpboot/preseed.cfg.j2"
-    dest: "{{ tftpboot_dir }}/preseed.cfg"
+    src: "var/lib/tftpboot/{{ item }}.cfg.j2"
+    dest: "{{ tftpboot_dir }}/{{ item }}.cfg"
     owner: root
     group: root
     mode: 0644
+  with_items:
+    - preseed
+    - ubuntu_12.04_preseed
+    - ubuntu_14.04_preseed
   when: >
         (sync_tftp is defined and not sync_tftp) or
         sync_tftp is not defined
 
 - name: config_tftp | creating preseed.cfg for auto-installs
   template:
-    src: "var/lib/tftpboot/preseed.cfg.j2"
-    dest: "{{ tftpboot_dir }}/preseed.cfg"
+    src: "var/lib/tftpboot/{{ item }}.cfg.j2"
+    dest: "{{ tftpboot_dir }}/{{ item }}.cfg"
     owner: root
     group: root
     mode: 0644
   run_once: true
+  with_items:
+    - preseed
+    - ubuntu_12.04_preseed
+    - ubuntu_14.04_preseed
   when: sync_tftp is defined and sync_tftp
 
 - name: config_tftp | reconfiguring txt.cfg
