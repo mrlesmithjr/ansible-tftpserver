@@ -192,10 +192,10 @@ d-i preseed/late_command string \
 {%     for item in create_users %}
 {%       if item.preseed_user is defined and item.preseed_user %}
 {%         if item.sudo is defined and item.sudo %}
-    echo "{{ item.user }}	ALL=(ALL) NOPASSWD:ALL">>/target/etc/sudoers; \
+    echo "{{ item.user }}	ALL=(ALL) NOPASSWD:ALL">>/target/etc/sudoers;
 {%         endif %}
 {%       endif %}
 {%     endfor %}
 {%   endif %}
 {% endif %}
-    in-target sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+#    in-target sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/g' /etc/ssh/sshd_config;
