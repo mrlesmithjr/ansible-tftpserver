@@ -145,7 +145,7 @@ d-i user-setup/allow-password-weak boolean true
 {% endif %}
 
 # Root password, either in clear text or encrypted...encrypted is default
-d-i passwd/root-password-crypted password {{ root_password }}
+#d-i passwd/root-password-crypted password {{ root_password }}
 
 # Set to true if you want to encrypt the first user's home directory.
 d-i user-setup/encrypt-home boolean false
