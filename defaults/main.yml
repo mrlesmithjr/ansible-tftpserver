@@ -102,6 +102,9 @@ pre_seed_expert_recipe_partitions:  #define the partitions to create during pre-
     min_size: 5000
     priority: 10000
     use_filesystem: true
+pre_seed_packages:  #define packages to install during pre-seed installation(s)
+  - openssh-server
+  - open-vm-tools
 pre_seed_partition_disk: /dev/sda  #defines disk to install to during pre-seed TFTP/PXE install
 pre_seed_partitioning_method: lvm   #defines partitioning method....lvm, regular or crypto
 pri_domain_name: example.org  #define here or globally in group_vars/all

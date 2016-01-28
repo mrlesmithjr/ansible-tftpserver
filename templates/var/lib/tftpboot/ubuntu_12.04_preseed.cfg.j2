@@ -159,7 +159,7 @@ d-i user-setup/encrypt-home boolean false
 tasksel tasksel/first mulitselect standard
 
 # Individual additional packages to install
-d-i pkgsel/include string openssh-server open-vm-tools
+d-i pkgsel/include string {% for item in pre_seed_packages %}{{ item }}{% if not loop.last %} {% endif %}{% endfor %}
 
 ### Boot loader installation
 d-i grub-installer/only_debian boolean true
