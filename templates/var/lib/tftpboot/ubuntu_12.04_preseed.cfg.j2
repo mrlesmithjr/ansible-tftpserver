@@ -12,7 +12,8 @@ d-i netcfg/wireless_wep string
 ### Mirror settings
 # If you select ftp, the mirror/country string does not need to be set.
 {% if tftpserver_enable_apt_mirror is defined and tftpserver_enable_apt_mirror %}
-d-i mirror/country string manual
+d-i mirror/http/countries select US
+d-i mirror/country string US
 d-i mirror/http/hostname string {{ tftpserver_apt_mirror_server }}
 d-i mirror/http/directory string {{ tftpserver_apt_mirror_dir }}
 d-i mirror/http/mirror select {{ tftpserver_apt_mirror_server }}
