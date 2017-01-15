@@ -185,8 +185,8 @@ tftpserver_preseed_files:
   - 'ubuntu_12.04_preseed'
   - 'ubuntu_14.04_preseed'
   - 'ubuntu_16.04_preseed'
-tftpserver_preseed_mirror: 'us.archive.ubuntu.com'
-tftpserver_preseed_mirror_hostname: 'us.archive.ubuntu.com'
+tftpserver_preseed_mirror: '{{ ansible_hostname }}' # Define mirror...(us.archive.ubuntu.com)
+tftpserver_preseed_mirror_hostname: '{{ ansible_hostname }}' # Define mirror...(us.archive.ubuntu.com)
 tftpserver_preseed_ntp_sync: true  #defines if system clock is synced from NTP during install
 tftpserver_preseed_packages:  #define packages to install during pre-seed installation(s)
   - 'openssh-server'

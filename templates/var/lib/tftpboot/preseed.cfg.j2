@@ -18,7 +18,8 @@ d-i mirror/http/hostname string {{ tftpserver_apt_mirror_server }}
 d-i mirror/http/directory string {{ tftpserver_apt_mirror_dir }}
 d-i mirror/http/mirror select {{ tftpserver_apt_mirror_server }}
 {% elif (tftpserver_enable_apt_mirror is defined and not tftpserver_enable_apt_mirror) or tftpserver_enable_apt_mirror is not defined %}
-d-i mirror/country string manual
+d-i mirror/http/countries select US
+d-i mirror/country string US
 d-i mirror/http/hostname string {{ tftpserver_preseed_mirror_hostname }}
 d-i mirror/http/directory string /images/Ubuntu/16.04
 d-i mirror/http/mirror select {{ tftpserver_preseed_mirror }}
