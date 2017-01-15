@@ -12,14 +12,10 @@ d-i netcfg/wireless_wep string
 ### Mirror settings
 # If you select ftp, the mirror/country string does not need to be set.
 {% if tftpserver_enable_apt_mirror is defined and tftpserver_enable_apt_mirror %}
-d-i mirror/http/countries select US
-d-i mirror/country string US
 d-i mirror/http/hostname string {{ tftpserver_apt_mirror_server }}
 d-i mirror/http/directory string {{ tftpserver_apt_mirror_dir }}
 d-i mirror/http/mirror select {{ tftpserver_apt_mirror_server }}
 {% elif (tftpserver_enable_apt_mirror is defined and not tftpserver_enable_apt_mirror) or tftpserver_enable_apt_mirror is not defined %}
-d-i mirror/http/countries select US
-d-i mirror/country string US
 d-i mirror/http/hostname string {{ tftpserver_preseed_mirror_hostname }}
 d-i mirror/http/directory string /images/Ubuntu/16.04
 d-i mirror/http/mirror select {{ tftpserver_preseed_mirror }}
@@ -32,8 +28,8 @@ d-i mirror/http/proxy string http://{{ tftpserver_apt_cacher_server }}:{{ tftpse
 {%   endif %}
 {% endif %}
 {% if (tftpserver_enable_apt_caching is defined and not tftpserver_enable_apt_caching) or tftpserver_enable_apt_caching is not defined %}
-{% endif %}
 d-i mirror/http/proxy string
+{% endif %}
 
 ### Clock and time zone setup
 d-i clock-setup/utc boolean true
@@ -106,6 +102,7 @@ d-i user-setup/encrypt-home boolean false
 tasksel tasksel/first multiselect
 # Individual additional packages to install
 d-i pkgsel/include string {% if tftpserver_preseed_packages is defined %}{{ tftpserver_preseed_packages|join(' ') }}{% endif %}
+
 d-i pkgsel/update-policy select none
 d-i pkgsel/upgrade select none
 popularity-contest popularity-contest/participate boolean false
