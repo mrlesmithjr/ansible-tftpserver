@@ -13,6 +13,7 @@
   unarchive:
     src: "{{ tftpserver_tftpboot_dir }}/{{ tftpserver_netboot_file }}"
     dest: "{{ tftpserver_tftpboot_dir }}"
+    copy: no
   args:
     creates: "{{ tftpserver_tftpboot_dir }}/pxelinux.0"
 
