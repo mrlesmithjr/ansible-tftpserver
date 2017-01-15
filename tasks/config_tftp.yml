@@ -24,10 +24,17 @@
     owner: "nobody"
     group: "nogroup"
 
-- name: config_tftp | Configuring pre-seed Files
+- name: config_tftp | Generating Default Preseed File
   template:
-    src: "var/lib/tftpboot/{{ item }}.cfg.j2"
-    dest: "{{ tftpserver_tftpboot_dir }}/{{ item }}.cfg"
+    src: "var/lib/tftpboot/preseed.cfg.j2"
+    dest: "{{ tftpserver_tftpboot_dir }}/preseed.cfg"
+    owner: "nobody"
+    group: "nogroup"
+
+- name: config_tftp | Generating Additional Distro Preseed Files
+  template:
+    src: "var/lib/tftpboot/preseed.cfg.j2"
+    dest: "{{ tftpserver_tftpboot_dir }}/{{ item.distro }}_{{ item.version }}.cfg"
     owner: "nobody"
     group: "nogroup"
   with_items: '{{ tftpserver_preseed_files }}'

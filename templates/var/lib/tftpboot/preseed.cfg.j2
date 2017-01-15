@@ -16,9 +16,11 @@ d-i mirror/http/hostname string {{ tftpserver_apt_mirror_server }}
 d-i mirror/http/directory string {{ tftpserver_apt_mirror_dir }}
 d-i mirror/http/mirror select {{ tftpserver_apt_mirror_server }}
 {% elif (tftpserver_enable_apt_mirror is defined and not tftpserver_enable_apt_mirror) or tftpserver_enable_apt_mirror is not defined %}
-d-i mirror/http/hostname string {{ tftpserver_preseed_mirror_hostname }}
-d-i mirror/http/directory string /images/Ubuntu/16.04
-d-i mirror/http/mirror select {{ tftpserver_preseed_mirror }}
+d-i mirror/country string manual
+d-i mirror/http/hostname string {{ tftpserver_bind_address }}
+{%   if item.distro|lower == "ubuntu" %}
+d-i mirror/http/directory string /images/Ubuntu/{{ item.version }}
+{%   endif %}
 {% endif %}
 {% if (tftpserver_enable_apt_caching is defined and tftpserver_enable_apt_caching) and tftpserver_apt_cacher_server is defined %}
 {%   if tftpserver_domain_name is defined %}
@@ -126,7 +128,7 @@ d-i preseed/late_command string \
 {% if not tftpserver_preseed_user_info.sudo_password %}
 echo "tftpserver_preseed_user_info.username    ALL=(ALL) NOPASSWD:ALL" >> /target/etc/sudoers; \
 {% endif %}
-{% if ansible_distribution == "Ubuntu" and ansible_distribution_release >= '16.04' %}
+{% if item >= '16.04' %}
 in-target ln -s /lib/systemd/system/serial-getty@.service /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service; \
 {% endif %}
 # regenerate SSH keys..Good for creating templates
