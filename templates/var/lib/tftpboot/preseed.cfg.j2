@@ -18,8 +18,12 @@ d-i mirror/http/mirror select {{ tftpserver_apt_mirror_server }}
 {% elif (tftpserver_enable_apt_mirror is defined and not tftpserver_enable_apt_mirror) or tftpserver_enable_apt_mirror is not defined %}
 d-i mirror/country string manual
 d-i mirror/http/hostname string {{ tftpserver_bind_address }}
-{%   if item.distro|lower == "ubuntu" %}
+{%   if item.distro is defined %}
+{%     if item.distro|lower == "ubuntu" %}
 d-i mirror/http/directory string /images/Ubuntu/{{ item.version }}
+{%     endif %}
+{%   elif item.distro is not defined %}
+d-i mirror/http/directory string /images/Ubuntu
 {%   endif %}
 {% endif %}
 {% if (tftpserver_enable_apt_caching is defined and tftpserver_enable_apt_caching) and tftpserver_apt_cacher_server is defined %}
@@ -128,8 +132,10 @@ d-i preseed/late_command string \
 {% if not tftpserver_preseed_user_info.sudo_password %}
 echo "tftpserver_preseed_user_info.username    ALL=(ALL) NOPASSWD:ALL" >> /target/etc/sudoers; \
 {% endif %}
-{% if item >= '16.04' %}
+{% if item.distro is defined %}
+{%   if item.distro|lower == 'ubuntu' and item.version >= '16.04' %}
 in-target ln -s /lib/systemd/system/serial-getty@.service /etc/systemd/system/getty.target.wants/serial-getty@ttyS0.service; \
+{%   endif %}
 {% endif %}
 # regenerate SSH keys..Good for creating templates
 rm -f /target/etc/ssh/ssh_host_*; \
