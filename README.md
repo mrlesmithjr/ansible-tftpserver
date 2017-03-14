@@ -317,7 +317,7 @@ Example Playbook
       - option: 'dns-server'
         value:
           - '192.168.250.10'
-          # - '192.168.202.201'
+          # - '192.168.250.201'
       # - option: 'domain-name'
       #   value:
       #     - 'another.{{ dnsmasq_pri_domain_name }}'
@@ -329,22 +329,48 @@ Example Playbook
       - option: 'ntp-server'
         value:
           - '192.168.250.10'
-          # - '192.168.202.201'
+          # - '192.168.250.201'
       - option: 'router'
         value:
           - '192.168.250.1'
     # Defines if DHCP services are provided by DNSMASQ
-    dnsmasq_enable_dhcp: true
+    dnsmasq_enable_dhcp: false
     # Defines if TFTP services are provided by DNSMASQ
     dnsmasq_enable_tftp: true
     dnsmasq_pri_bind_address: '{{ ansible_enp0s8.ipv4.address }}'
     dnsmasq_pri_domain_name: '{{ pri_domain_name }}'
     etc_hosts_add_all_hosts: true
+    isc_dhcp_authoritative: true
+    isc_dhcp_scopes:
+      - subnet: '192.168.250.0'
+        default_lease_time: '{{ isc_dhcp_default_lease_time }}'
+        max_lease_time: '{{ isc_dhcp_max_lease_time }}'
+        netmask: '255.255.255.0'
+        # Define scope specific options to configure
+        options:
+          - name: 'routers'
+            value: '192.168.250.1'
+          - name: 'subnet-mask'
+            value: '255.255.255.0'
+          - name: 'broadcast-address'
+            value: '192.168.250.255'
+          - name: 'domain-name-servers'
+            value: '{{ isc_dhcp_name_servers|join (", ") }}'
+        range: '192.168.250.128 192.168.250.224'
+    # Defines primary domain name for environment
+    isc_dhcp_pri_domain_name: '{{ pri_domain_name }}'
+    # Defines if TFTP/PXE boot options should be enabled
+    isc_dhcp_enable_pxe_boot: true
+    # Defines boot file used for pxe boot
+    isc_dhcp_pxe_boot_file: 'pxelinux.0'
+    # Defines tftp server to PXE/TFTP from
+    isc_dhcp_pxe_boot_server: '192.168.250.10'
     pri_domain_name: 'test.vagrant.local'
     tftpserver_bind_address: '{{ ansible_enp0s8.ipv4.address }}'
   roles:
     - role: ansible-etc-hosts
     - role: ansible-dnsmasq
+    - role: ansible-isc-dhcp
     - role: ansible-tftpserver
 ```
 
