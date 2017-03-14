@@ -301,15 +301,49 @@ Install the required Ansible roles by running:
 
 Example Playbook
 ----------------
+
 ```
 ---
-- hosts: tftpserver-nodes
+- hosts: all
   become: true
   vars:
-    tftpserver_enable_apt_caching: false
+    dnsmasq_config: true
+    dnsmasq_dhcp_boot: 'pxelinux.0,{{ inventory_hostname }},{{ dnsmasq_pri_bind_address }}'
+    dnsmasq_dhcp_scopes:
+      - start: '192.168.250.128'
+        end: '192.168.250.224'
+        netmask: '255.255.255.0'
+    dnsmasq_dhcp_options:
+      - option: 'dns-server'
+        value:
+          - '192.168.250.10'
+          # - '192.168.202.201'
+      # - option: 'domain-name'
+      #   value:
+      #     - 'another.{{ dnsmasq_pri_domain_name }}'
+      - option: 'domain-search'
+        value:
+          - 'dev.{{ dnsmasq_pri_domain_name }}'
+          - 'prod.{{ dnsmasq_pri_domain_name }}'
+          - 'test.{{ dnsmasq_pri_domain_name }}'
+      - option: 'ntp-server'
+        value:
+          - '192.168.250.10'
+          # - '192.168.202.201'
+      - option: 'router'
+        value:
+          - '192.168.250.1'
+    # Defines if DHCP services are provided by DNSMASQ
+    dnsmasq_enable_dhcp: true
+    # Defines if TFTP services are provided by DNSMASQ
+    dnsmasq_enable_tftp: true
+    dnsmasq_pri_bind_address: '{{ ansible_enp0s8.ipv4.address }}'
+    dnsmasq_pri_domain_name: '{{ pri_domain_name }}'
+    etc_hosts_add_all_hosts: true
+    pri_domain_name: 'test.vagrant.local'
+    tftpserver_bind_address: '{{ ansible_enp0s8.ipv4.address }}'
   roles:
-    - role: ansible-apt-cacher-ng
-      when: tftpserver_enable_apt_caching
+    - role: ansible-etc-hosts
     - role: ansible-dnsmasq
     - role: ansible-tftpserver
 ```
