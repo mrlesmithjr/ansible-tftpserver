@@ -43,14 +43,18 @@ d-i time/zone string US/Eastern
 d-i clock-setup/ntp boolean {{ tftpserver_preseed_ntp_sync|lower }}
 
 ### Partitioning
-d-i partman-auto/disk string {{ tftpserver_preseed_partition_disk }}
+d-i partman-auto/disk string {{ tftpserver_preseed_partition_disk|join (' ') }}
 d-i partman-auto/method string {{ tftpserver_preseed_partitioning_method }}
-{% if tftpserver_preseed_partitioning_method == "lvm" %}
+{% if tftpserver_preseed_partitioning_method|lower == "lvm" %}
 d-i partman-lvm/device_remove_lvm boolean true
-d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean false
 d-i partman-lvm/confirm_nooverwrite boolean true
 d-i partman-auto-lvm/guided_size string max
+{% endif %}
+{% if tftpserver_preseed_raid %}
+d-i partman-md/device_remove_md boolean true
+d-i partman-md/confirm boolean true
+d-i partman-md/confirm_nooverwrite boolean true
 {% endif %}
 d-i partman-auto/choose_recipe select atomic
 {% if tftpserver_preseed_expert_recipe_partitioning is defined and tftpserver_preseed_expert_recipe_partitioning %}
@@ -61,7 +65,7 @@ d-i partman-auto/expert_recipe string                         \
 {%     if item.bootable is defined and item.bootable %}
                       $primary{ } $bootable{ }                \
 {%     endif %}
-{%     if tftpserver_preseed_partitioning_method == "lvm" and item.lv_name is defined %}
+{%     if tftpserver_preseed_partitioning_method|lower == "lvm" and item.lv_name is defined %}
                       lv_name{ {{ item.lv_name }} }           \
                       $lvmok{ }                               \
 {%     endif %}
@@ -84,7 +88,6 @@ d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
-d-i partman-md/confirm boolean true
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm_nooverwrite boolean true
