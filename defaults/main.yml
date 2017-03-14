@@ -158,7 +158,7 @@ tftpserver_images_folders:
   - 'Ubuntu/16.04'
 
 # Define ISO images to download
-tftpserver_iso_images: []
+tftpserver_iso_images:
 #  - url: 'http://www.gtlib.gatech.edu/pub/centos/7/isos/x86_64'
 #    file: 'CentOS-7-x86_64-Minimal-1503-01.iso'
 #    folder: 'CentOS/7'
@@ -246,7 +246,10 @@ tftpserver_preseed_packages:
   # - 'open-vm-tools'
 
 # Defines disk to install to during pre-seed TFTP/PXE install
-tftpserver_preseed_partition_disk: '/dev/sda'
+# If using raid define more than one single disk device
+tftpserver_preseed_partition_disk:
+  - '/dev/sda'
+  # - '/dev/sdb'
 
 # Defines partitioning method....lvm, regular or crypto
 tftpserver_preseed_partitioning_method: 'lvm'
@@ -255,6 +258,9 @@ tftpserver_preseed_partitioning_method: 'lvm'
 # good for mass PXE deployments when the option to do a one-time boot to
 # PXE is not an option.
 tftpserver_preseed_poweroff_after_install: false
+
+# Defines if Raid (software) is used
+tftpserver_preseed_raid: false
 
 # To generate passwords use (replace P@55w0rd with new password)
 # echo "P@55w0rd" | mkpasswd -s -m sha-512
