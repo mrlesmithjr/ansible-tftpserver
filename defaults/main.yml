@@ -62,11 +62,11 @@ tftpserver_boot_menu:
     menu_default: false
     kernel: 'images/Ubuntu/14.04.5/install/netboot/ubuntu-installer/amd64/linux'
     append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftpserver_bind_address }}/images/Ubuntu/14.04.5/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftpserver_bind_address }}/ubuntu_14.04.5_preseed.cfg live-installer/net-image=http://{{ tftpserver_bind_address }}/images/Ubuntu/14.04.5/install/filesystem.squashfs'
-  - label: 'Ubuntu 16.04.1 (Pre-Seed)'
-    menu_label: 'Install Ubuntu 16.04.1 (Pre-Seed)'
+  - label: 'Ubuntu 16.04.2 (Pre-Seed)'
+    menu_label: 'Install Ubuntu 16.04.2 (Pre-Seed)'
     menu_default: false
-    kernel: 'images/Ubuntu/16.04.1/install/netboot/ubuntu-installer/amd64/linux'
-    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftpserver_bind_address }}/images/Ubuntu/16.04.1/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftpserver_bind_address }}/ubuntu_16.04.1_preseed.cfg live-installer/net-image=http://{{ tftpserver_bind_address }}/images/Ubuntu/16.04.1/install/filesystem.squashfs'
+    kernel: 'images/Ubuntu/16.04.2/install/netboot/ubuntu-installer/amd64/linux'
+    append: 'auto=true priority=critical vga=788 initrd=tftp://{{ tftpserver_bind_address }}/images/Ubuntu/16.04.2/install/netboot/ubuntu-installer/amd64/initrd.gz locale=en_US.UTF-8 kbd-chooser/method=us netcfg/choose_interface=auto url=tftp://{{ tftpserver_bind_address }}/ubuntu_16.04.2_preseed.cfg live-installer/net-image=http://{{ tftpserver_bind_address }}/images/Ubuntu/16.04.2/install/filesystem.squashfs'
 
 # Defines if images folder(s) and isos should be added
 tftpserver_build_images: true
@@ -172,8 +172,8 @@ tftpserver_iso_images:
     file: 'ubuntu-14.04.5-server-amd64.iso'
     folder: 'Ubuntu/14.04.5'
   - url: 'http://mirrors.kernel.org/ubuntu-releases/16.04'
-    file: 'ubuntu-16.04.1-server-amd64.iso'
-    folder: 'Ubuntu/16.04.1'
+    file: 'ubuntu-16.04.2-server-amd64.iso'
+    folder: 'Ubuntu/16.04.2'
 
 tftpserver_netboot_file: 'netboot.tar.gz'
 tftpserver_netboot_url: 'http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/current/images/netboot'
@@ -229,7 +229,7 @@ tftpserver_preseed_files:
   - distro: 'ubuntu'
     version: '14.04.5'
   - distro: 'ubuntu'
-    version: '16.04.1'
+    version: '16.04.2'
 
 # Define mirror...(us.archive.ubuntu.com)
 tftpserver_preseed_mirror: '{{ ansible_hostname }}'
